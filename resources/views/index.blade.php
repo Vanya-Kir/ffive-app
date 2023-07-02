@@ -1,60 +1,64 @@
-<h1>Список заметок</h1>
-
-<ul class='red'>
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-</ul>
-<div class="main" id='main'></div>
+<div class="main">
+    <h1>Список заметок</h1>
+    <div class="content" id='content'></div>
+    <br>
+    <a href="http://127.0.0.1:8000/notes/create" class="create btn">Добавить заметку</a>
+</div>
+<link href="{{ asset('style.css') }}" rel="stylesheet">
 <script src="{{ asset('js/jquery.js') }}"></script>
-<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script> -->
-<!-- <script src="{{ asset('js/app.js') }}"></script> -->
 
 <script>
-        console.log('lol');
-
     $(document).ready(function(){
-//     $.ajax({
-//         url: `http://127.0.0.1:8000/api/notes`,
-//         method: 'get',
-//         dataType: 'json',
-//         success: function (data) {
-//         const notes = data.response.data;
-//         console.log(notes);
-//         notes.forEach(note => {
-//             wrapper_note_table.append(`
-//             <a href="http://127.0.0.1:8000/notes/${note.id}/edit"> 
-//             <div>123</div>
-//             </a>`);
-//         });
-//         }
-// });
-
-$.ajax({
+    $.ajax({
 			type: "GET",
 			url: 'http://127.0.0.1:8000/api/notes',
 			dataType: 'json',
  
 			success: function(data){
                 console.log(data);
-				// const notes = JSON.parse(data);
-                // console.log(notes);
-                const main = document.getElementById("main");
+                const content = document.getElementById("content");
                 data.forEach(note => {
                     console.log(note);
-                    const para = document.createElement("p");
-                    const node = document.createTextNode(note.id);
-                    para.appendChild(node);
-                    main.appendChild(para);
-                    // main.appendChild(`
-                    //     <a href="http://127.0.0.1:8000/notes/${note.id}/edit"> 
-                    //     <div>123</div></a>`
-                    //     )
+                    const note_block = document.createElement("div");
+                    note_block.className = "block";
+                    const note_name = document.createElement("a");
+                    note_name.className = "name";
+                    note_name.setAttribute('href', `http://127.0.0.1:8000/notes/${note.id}`);
+
+                    const note_delete = document.createElement("button");
+                    note_delete.className = "delete btn";
+                    // note_delete.setAttribute('href', "http://google.com");
+                    note_delete.setAttribute('onclick', `delete_note(${note.id})`);
+
+
+                    const name = document.createTextNode(note.name);
+                    const delete_text = document.createTextNode("Удалить");
+
+                    note_name.appendChild(name);                
+                    note_block.appendChild(note_name);
+
+                    note_delete.appendChild(delete_text);
+                    note_block.appendChild(note_delete); 
+
+                    content.appendChild(note_block);
                 });
 			}
 		});
-
     });
+
+    function delete_note(id){
+        $.ajax({
+            url: `http://127.0.0.1:8000/api/notes/${id}`,
+            method: 'delete',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function () {
+                location.reload();
+            },
+            error: function(){
+                alert('Ошибка');
+            }
+        })
+    }
 
 </script>

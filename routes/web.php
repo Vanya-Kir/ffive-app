@@ -21,12 +21,12 @@ Route::get('/notes', function () {
     return view('index');
 });
 
-Route::get('{id}/edit', function () {
-    return view('welcome');
+Route::get('/notes/create', function () {
+    return view('create');
 });
 
-Route::get('/create', function () {
-    return view('create');
+Route::get('/notes/{id}/edit', function () {
+    return view('edit');
 });
 
 Route::get('/notes/{id}', function () {

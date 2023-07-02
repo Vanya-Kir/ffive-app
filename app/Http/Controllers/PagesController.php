@@ -13,14 +13,14 @@ class PagesController extends Controller
     }
     public function edit($id)
     {
-        return 'index';
+        return 'edit';
     }
     public function create()
     {
-        return 'index';
+        return 'create';
     }
     public function show($id)
     {
-        return 'index';
+        return 'show';
     }
 }

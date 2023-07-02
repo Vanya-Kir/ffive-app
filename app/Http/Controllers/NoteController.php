@@ -26,8 +26,8 @@ class NoteController extends Controller
             'description'=>'required',
             'done'=>'required'
         ]);
-        $created_note = Note::create($data);
-        return response($created_note);
+        $creat_note = Note::create($data);
+        return response($creat_note);
     }
 
     public function edit(Request $request, int $id)
@@ -38,7 +38,8 @@ class NoteController extends Controller
             'description'=>'required',
             'done'=>'required'
         ]);
-        return response($note->update($data));
+        $note->update($data);
+        return response(Note::findOrFail($id));
     }
 
     public function delete(int $id)

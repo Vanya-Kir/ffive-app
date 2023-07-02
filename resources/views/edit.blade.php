@@ -1,24 +1,24 @@
 <div class="main">
     <a href="http://127.0.0.1:8000/notes/">
-        <h1>Название заметки</h1>
+        <h1>Редактирование заметки</h1>
     </a>
     <link href="{{ asset('style.css') }}" rel="stylesheet">
     <script src="{{ asset('js/jquery.js') }}"></script>
 
     <div class="content">
     <label for="name">Название заметки</label><br>
-    <input type="text" id="name" name="name" value="" disabled><br>
-    <br>
+    <input type="text" id="name" name="name" value="" required><br>
     <label for="description">Описание заметки</label><br>
-    <textarea type="text" id="description" name="description" value="" disabled></textarea ><br><br>
+    <textarea  type="text" id="description" name="description" value="" required></textarea><br><br>
     <button onclick="delete_note()" class="btn delete">Удалить</button>
-    <button onclick="edit_note()" class="btn create">Редактировать</button>
+    <button onclick="save_note()" class="btn create">Сохранить</button>
     </div> 
 </div>
 
 <script>
-    let url = window.location.href;
+    let url = window.location.href.replace('/edit', '');
     let id = url.substring(url.lastIndexOf('/') + 1);
+    console.log(id)
 
     $.ajax({
     url: `http://127.0.0.1:8000/api/notes/${id}`,
@@ -50,8 +50,29 @@
             }
         })
     }
-    function edit_note(){
-        window.location.replace(`http://127.0.0.1:8000/notes/${id}/edit`);
+
+
+    function save_note(){
+        console.log($('#name').val())
+        $.ajax({
+            url: `http://127.0.0.1:8000/api/notes/${id}`,
+            contentType: 'application/json',
+            type: 'put',
+            dataType: 'json',
+
+            data: JSON.stringify({
+                 "name": $('#name').val(), "description": $('#description').val(), "done": false
+             }),
+            success: function (data) {
+                // const note = data;
+                // $('#name').val(data.name);
+                // $('#description').val(data.description);
+                window.location.replace("http://127.0.0.1:8000/notes");
+            },
+            error: function(){
+                alert('Ошибка');
+            }
+        });
     }
     
 </script>
