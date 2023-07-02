@@ -64,10 +64,10 @@
                  "name": $('#name').val(), "description": $('#description').val(), "done": false
              }),
             success: function (data) {
-                // const note = data;
-                // $('#name').val(data.name);
-                // $('#description').val(data.description);
-                window.location.replace("http://127.0.0.1:8000/notes");
+                const note = data;
+                $('#name').val(data.name);
+                $('#description').val(data.description);
+                // window.location.replace("http://127.0.0.1:8000/notes");
             },
             error: function(){
                 alert('Ошибка');
